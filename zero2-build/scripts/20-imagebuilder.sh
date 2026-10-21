@@ -29,8 +29,9 @@ rm -f "$d/packages/Packages.sig"
 rm -rf "$d"/keys/*
 ( cd "$d" && make package_index >/dev/null )
 
-# Drop runtime directories before packing.
-( cd "$d" && rm -rf build_dir bin tmp dl logs .profiles.mk )
+# Drop only scratch directories: build_dir/ carries the prebuilt kernel Image
+# and the per-target files the image step needs, so it must stay.
+( cd "$d" && rm -rf tmp dl logs .profiles.mk )
 
 ( cd /build/ib && tar -I 'zstd -T0 -19' -cf \
     /out/immortalwrt-imagebuilder-sunxi-cortexa53-with-easytier.tar.zst \
