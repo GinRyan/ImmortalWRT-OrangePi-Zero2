@@ -1,0 +1,32 @@
+# --- restored network / file services ---
+CONFIG_PACKAGE_luci-app-nfs=y
+CONFIG_PACKAGE_luci-i18n-nfs-zh-cn=y
+CONFIG_PACKAGE_luci-app-vsftpd=y
+CONFIG_PACKAGE_luci-i18n-vsftpd-zh-cn=y
+CONFIG_PACKAGE_luci-app-samba4=y
+CONFIG_PACKAGE_luci-i18n-samba4-zh-cn=y
+CONFIG_PACKAGE_luci-app-openclash=y
+CONFIG_PACKAGE_luci-app-zerotier=y
+CONFIG_PACKAGE_luci-i18n-zerotier-zh-cn=y
+CONFIG_PACKAGE_luci-app-cloudflared=y
+CONFIG_PACKAGE_luci-i18n-cloudflared-zh-cn=y
+CONFIG_PACKAGE_luci-app-haproxy-tcp=y
+CONFIG_PACKAGE_luci-app-mwan3=y
+CONFIG_PACKAGE_luci-app-nft-qos=y
+CONFIG_PACKAGE_luci-app-sqm=y
+CONFIG_PACKAGE_luci-app-wifischedule=y
+CONFIG_PACKAGE_luci-app-cpulimit=y
+CONFIG_PACKAGE_luci-app-autoreboot=y
+# --- storage (for Samba/NFS shares) ---
+CONFIG_PACKAGE_kmod-usb-storage=y
+CONFIG_PACKAGE_kmod-usb-storage-extras=y
+CONFIG_PACKAGE_kmod-usb-storage-uas=y
+# --- themes (Argon default; Glass/Liquid/Fluent/Vantage selectable) ---
+CONFIG_PACKAGE_luci-theme-argon=y
+CONFIG_PACKAGE_luci-app-argon-config=y
+CONFIG_PACKAGE_luci-i18n-argon-config-zh-cn=y
+CONFIG_PACKAGE_luci-theme-glass=y
+CONFIG_PACKAGE_luci-theme-liquid=y
+CONFIG_PACKAGE_luci-theme-fluent=y
+CONFIG_PACKAGE_luci-theme-vantage=y
+CONFIG_PACKAGE_luci-app-vantage=y

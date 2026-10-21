@@ -8,7 +8,8 @@
 ```
 zero2-build/
 ├─ Dockerfile                 Ubuntu 24.04 + OpenWrt 依赖（含 ccache）
-├─ configs/zero2.config       本次验证过的完整 .config（target/包列表/512MB rootfs/ccache）
+├─ configs/zero2.config       本次验证过的完整 .config（target/包列表/2GB rootfs，DEVEL+ccache）
+├─ configs/extras.fragment    扩展包与主题（NFS/FTP/Samba4/openclash/四主题等）
 ├─ easytier/                  EasyTier ipk（架构已改为 aarch64_cortex-a53）
 ├─ scripts/
 │  ├─ 00-sync.sh              同步源码到构建卷 + CRLF→LF + 首次注入 .config
@@ -66,8 +67,8 @@ cd /path/to/immortalwrt/zero2-build
 
 - **构建卷** `opizero2-build`：`build_dir/`、`staging_dir/`、`feeds/`、`dl/` 全部保留，
   所以 `10-build.sh` 是增量的；只有改驱动 patch / 内核 / 包源码时才需要重跑。
-- **ccache**：`CONFIG_CCACHE=y`、`CONFIG_CCACHE_DIR="/build/ccache"` 已写进
-  `configs/zero2.config`。清掉 `build_dir` 后重编也能命中大部分编译缓存。
+- **ccache**：`CONFIG_DEVEL=y` 时 `CONFIG_CCACHE=y` 才可见，`CONFIG_CCACHE_DIR="/build/ccache"`
+  已写进 `configs/zero2.config`。清掉 `build_dir` 后重编也能命中大部分编译缓存。
 - **IB**：`/build/ib` 保留，`image` 阶段直接复用；`ib` 阶段会重新生成。
 
 ## 配置
@@ -76,7 +77,14 @@ cd /path/to/immortalwrt/zero2-build
 - 想改配置：进容器 `./build.ps1 -Stage shell`，`make menuconfig`，或直接改 `.config`；
 - 想回到默认：删掉 `/build/repo/.config` 再跑 `sync`/`build`；
 - `configs/zero2.config` 里已包含：target sunxi/cortexa53、DEVICE_xunlong_orangepi-zero2、
-  LuCI、PassWall（Xray）、kmod-nft-tproxy/socket/nat、kmod-tun、iw/iwinfo、512 MB rootfs。
+  LuCI、PassWall（Xray）、kmod-nft-tproxy/socket/nat、kmod-tun、iw/iwinfo、2 GB rootfs。
+- `configs/extras.fragment` 会在首次 build 时追加：NFS、vsftpd、Samba4、openclash、zerotier、
+  cloudflared、haproxy-tcp、mwan3、nft-qos、sqm、wifischedule、cpulimit、autoreboot，
+  以及 Argon/Glass/Liquid/Fluent/Vantage 五个主题（Argon 为默认）。
+- 外部主题由 `10-build.sh` 按 pin 住的 commit 从 codeload 拉取到 `package/themes/`，
+  主题 ipk 随 `20-imagebuilder.sh` 一起进 IB。
+- **Samba4 + host perl**：Ubuntu 24.04 上 host perl 的 miniperl 默认 PIE 链接会失败，
+  `10-build.sh` 会先用 `HOST_CFLAGS="-O2 -fno-PIE" HOST_LDFLAGS="-no-pie"` 预编译 host perl。
 
 ## ImageBuilder 快速换包
 

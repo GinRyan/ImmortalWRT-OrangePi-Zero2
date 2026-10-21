@@ -24,6 +24,7 @@ rsync -a --delete \
     --exclude=work \
     --exclude=packages \
     --exclude=zero2-build \
+    --exclude=package/themes \
     "$SRC"/ "$BUILD"/
 
 # exFAT/NTFS checkouts may contain CRLF; the OpenWrt build needs LF.
